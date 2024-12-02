@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    th, td { padding: 3px; }
+  </style>
+</head>
+<body style="margin: 50px;">
+<h1>사용자 목록
+  <span style="font-size: 16px; margin-left: 100px;">
+      <span th:if="${session.sessUid}">
+        [[${session.sessUname}]]님 환영합니다.&nbsp;&nbsp;&nbsp;
+        <a th:href="/user/logout">로그아웃</a>
+      </span>
+      <span th:unless="${session.sessUid}">
+        <a href="/user/login">로그인</a>&nbsp;&nbsp;&nbsp;
+        <a href="/user/register">사용자 등록</a>
+      </span>
+    </span>
+</h1>
+<hr>
+<table border="1">
+  <tr>
+    <th>No.</th>
+    <th>uid</th>
+    <th>이름</th>
+    <th>이메일</th>
+    <th>등록일</th>
+    <th>권한</th>
+    <th>액션</th>
+  </tr>
+  <tr th:each="user: ${userList}">
+    <td th:text="${userStat.count}">1</td>
+    <td th:text="${user.uid}">james</td>
+    <td th:text="${user.uname}">제임스</td>
+    <td th:text="${user.email}">james@gmail.com</td>
+    <td th:text="${user.regDate}">2024-09-26</td>
+    <td th:text="${user.role}">ROLE_USER</td>
+    <td>
+      <a th:href="@{/user/update/{x}(x=${user.uid})}">수정</a>
+      <a th:href="@{/user/delete/{x}(x=${user.uid})}">삭제</a>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
