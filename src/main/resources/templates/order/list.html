@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    th, td { padding: 3px; }
+  </style>
+</head>
+<body style="margin: 50px;">
+<h1>주문 목록
+  <span style="font-size: 16px; margin-left: 100px;">
+      <a th:href="@{/mall/list}">다시 쇼핑하기</a>&nbsp;&nbsp;&nbsp;
+      <a th:href="@{/user/logout}">로그아웃</a>
+    </span>
+</h1>
+<hr>
+<table border="1">
+  <tr>
+    <th>No.</th>
+    <th>Order Id</th>
+    <th>주문 내역</th>
+    <th>주문 시간</th>
+    <th>총 금액</th>
+    <th>액션</th>
+  </tr>
+  <tr th:each="order: ${orderList}">
+    <td th:text="${orderStat.count}">1</td>
+    <td th:text="${order.oid}">1</td>
+    <td>[[${orderTitleList.get(orderStat.index)}]]</td>
+    <td>[[${#temporals.format(order.orderDateTime, 'yy-MM-dd HH:mm')}]]</td>
+    <td th:text="${order.totalAmount}">115000</td>
+    <td>
+      <button>상세보기</button>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

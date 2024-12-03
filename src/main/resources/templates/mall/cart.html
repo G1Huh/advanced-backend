@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    th, td { padding: 3px; }
+  </style>
+</head>
+<body style="margin: 50px;">
+<h1>장바구니 보기
+  <span style="font-size: 16px; margin-left: 200px;">
+          <a th:href="@{/user/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
+          [[${session.sessUname}]]님 환영합니다.
+        </span>
+</h1>
+<table border="1">
+  <tr>
+    <th>No.</th>
+    <th>이미지</th>
+    <th>제목</th>
+    <th>저자</th>
+    <th>출판사</th>
+    <th>가격</th>
+    <th>수량</th>
+  </tr>
+  <tr th:each="cart: ${cartList}">
+    <td th:text="${cartStat.count}">1</td>
+    <td style="text-align: center;">
+      <img th:src="${cart.book.imageUrl}" alt="${book.title}" height="60">
+    </td>
+    <td th:text="${cart.book.title}">트렌드 코리아 2025</td>
+    <td th:text="${cart.book.author}">김난도 외 9명</td>
+    <td th:text="${cart.book.company}">미래의 창</td>
+    <td th:text="${cart.book.price}">20000</td>
+    <td th:text="${cart.quantity}">20000</td>
+  </tr>
+</table>
+<br><br>
+<h3>주문 금액 합계: [[${totalPrice}]]
+  <span style="margin-left: 100px;"></span>
+  <button onclick="location.href='/order/createOrder'">주문하기</button>
+</h3>
+</body>
+</html>

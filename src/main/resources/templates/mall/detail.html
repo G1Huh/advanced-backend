@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    th, td { padding: 3px; }
+  </style>
+</head>
+<body style="margin: 50px;">
+<h1>도서 상세보기
+  <span style="font-size: 16px; margin-left: 100px;">
+      <span th:if="${session.sessUid}" >
+        <a th:href="@{/mall/cart}">카트보기</a>&nbsp;&nbsp;&nbsp;
+        <a th:href="@{/user/logout}">로그아웃</a>&nbsp;&nbsp;&nbsp;
+        [[${session.sessUname}]]님 환영합니다.
+      </span>
+      <span th:unless="${session.sessUid}">
+          <a th:href="@{/user/login}">로그인</a>&nbsp;&nbsp;&nbsp;
+          <a th:href="@{/user/register}">사용자 등록</a>
+      </span>
+    </span>
+</h1>
+
+<img th:src="${book.imageUrl}" alt="${book.title}" height="200">
+<form action="/mall/addItemToCart" method="post">
+  <input type="hidden" name="bid" th:value="${book.bid}">
+  <table>
+    <tr><td th:text="${book.title}">트렌드 코리아 2025</td></tr>
+    <tr><td th:text="${book.author}">김난도 외 9명</td></tr>
+    <tr><td th:text="${book.company}">미래의 창</td></tr>
+    <tr><td th:text="${book.price}">20000</td></tr>
+    <tr><td></td></tr>
+  </table>
+  <div style="width: 800px" th:utext="${book.summary}">책 소개 내용</div><br>
+  수량: <input type="text" name="quantity" value="0"><br><br>
+  <button type="submit">카트에 담기</button>
+</form>
+</body>
+</html>
