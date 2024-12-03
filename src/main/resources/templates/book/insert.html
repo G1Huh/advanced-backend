@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    input { padding: 3px; }
+  </style>
+</head>
+<body style="margin: 50px;">
+<h1>도서 등록</h1>
+<hr>
+<form action="/book/insert" method="post">
+  <input type="hidden" name="bid" value="0">
+  <input type="text" name="title" placeholder="제목"><br><br>
+  <input type="text" name="author" placeholder="저자"><br><br>
+  <input type="text" name="company" placeholder="출판사"><br><br>
+  <input type="text" name="price" placeholder="가격"><br><br>
+  <input type="text" name="imageUrl" placeholder="Image URL"><br><br>
+  <textarea name="summary" rows="10" cols="60">요약</textarea><br><br>
+  <input type="submit" value="등록">
+</form>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    th, td { padding: 3px; }
+  </style>
+  <script>
+    function gotoPage(){
+      let page = document.getElementById("page").value;
+      location.href = '/book/list?p=' + page;
+    }
+  </script>
+</head>
+<body style="margin: 50px;">
+<h1>도서 목록
+  <span style="font-size: 16px; margin-left: 100px;">
+      <a th:href="@{/book/insert}">도서 등록</a>
+      <span style="margin-left:40px">페이지</span>
+      <input type="text" id="page" value="1">
+      <button onClick="gotoPage()">페이지 이동</button>
+    </span>
+</h1>
+<hr>
+<table border="1">
+  <tr>
+    <th>Id</th>
+    <th>이미지</th>
+    <th>제목</th>
+    <th>저자</th>
+    <th>출판사</th>
+    <th>가격</th>
+    <th>액션</th>
+  </tr>
+  <tr th:each="book: ${bookList}">
+    <td th:text="${book.bid}">1</td>
+    <td style="text-align: center;">
+      <img th:src="${book.imageUrl}" height="60">
+    </td>
+    <td th:text="${book.title}">트렌드 코리아 2025</td>
+    <td th:text="${book.author}">김난도 외 9명</td>
+    <td th:text="${book.company}">미래의 창</td>
+    <td th:text="${book.price}">20000</td>
+    <td>
+      <a th:href="@{/book/update/{x}(x=${book.bid})}">수정</a>
+      <a th:href="@{/book/delete/{x}(x=${book.bid})}">삭제</a>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

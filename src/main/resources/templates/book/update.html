@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    input { padding: 3px; }
+  </style>
+</head>
+<body style="margin: 50px;">
+<h1>도서 수정</h1>
+<hr>
+<form action="/book/update" method="post">
+  <input type="hidden" name="bid" th:value="${book.bid}"><br><br>
+  <input type="text" th:value="${book.bid}" disabled><br><br>
+  <input type="text" name="title" th:value="${book.title}"><br><br>
+  <input type="text" name="author" th:value="${book.author}"><br><br>
+  <input type="text" name="company" th:value="${book.company}"><br><br>
+  <input type="text" name="price" th:value="${book.price}"><br><br>
+  <input type="text" name="imageUrl" th:value="${book.imageUrl}"><br><br>
+  <textarea name="summary" rows="10" cols="60">[[${book.summary}]]</textarea><br><br>
+  <input type="submit" value="수정">
+</form>
+</body>
+</html>
