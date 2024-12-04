@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        th, td { padding: 3px; }
+    </style>
+</head>
+<body style="margin: 50px;">
+<h1>도서 판매 통계
+    <span style="font-size: 16px; margin-left: 100px;">
+      <a th:href="@{/order/listAll}">주문목록 보기</a>&nbsp;&nbsp;&nbsp;
+      <a th:href="@{/user/logout}">로그아웃</a>
+    </span>
+</h1>
+<hr>
+<table border="1">
+    <tr>
+        <th>No.</th>
+        <th>Book Id</th>
+        <th>제목</th>
+        <th>출판사</th>
+        <th>단가</th>
+        <th>판매 수량</th>
+        <th>판매 금액</th>
+    </tr>
+    <tr th:each="bs: ${bookStatList}">
+        <td th:text="${bsStat.count}">1</td>
+        <td th:text="${bs.bid}">1</td>
+        <td th:text="${bs.title}">제목</td>
+        <td th:text="${bs.company}">출판사</td>
+        <td th:text="${bs.unitPrice}">단가</td>
+        <td th:text="${bs.quantity}">판매 수량</td>
+        <td th:text="${bs.totalPrice}">판매 금액</td>
+    </tr>
+</table>
+</body>
+</html>
