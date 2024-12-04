@@ -1,5 +1,7 @@
 package com.lion.demo.controller;
 
+import com.lion.demo.aspect.CheckPermission;
+import com.lion.demo.aspect.LogExecutionTime;
 import com.lion.demo.entity.BookStat;
 import com.lion.demo.entity.Cart;
 import com.lion.demo.entity.Order;
@@ -9,6 +11,7 @@ import com.lion.demo.service.CartService;
 import com.lion.demo.service.OrderService;
 import com.lion.demo.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,6 +74,7 @@ public class OrderController {
 
     // 관리자 모드 - 모든 주문내역 보기
     @GetMapping("/listAll")
+    @CheckPermission("ROLE_ADMIN")
     public String listAll(Model model) {
         // 기간 설정 : 024년 12월 주문 리스트
         LocalDateTime startTime = LocalDateTime.of(2024, 12, 01, 00, 00);
@@ -104,6 +108,7 @@ public class OrderController {
     }
 
     @GetMapping("/bookStat")
+    @LogExecutionTime
     public String bookStat(Model model) {
         LocalDateTime startTime = LocalDateTime.of(2024, 12, 1, 0, 0);
         LocalDateTime endTime = LocalDateTime.of(2024, 12, 31, 11, 59, 59, 999999999);
