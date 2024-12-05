@@ -27,20 +27,26 @@
 <table border="1">
     <tr>
         <th>No.</th>
+        <th>사진</th>
         <th>uid</th>
         <th>이름</th>
         <th>이메일</th>
         <th>등록일</th>
         <th>권한</th>
+        <th>provider</th>
         <th>액션</th>
     </tr>
     <tr th:each="user: ${userList}"> <!--th:each 반복 기능 -> count 는 반복 상태 변수 중 하나 -->
         <td th:text="${userStat.count}">1</td> <!--변수명+Stat : 해당 변수의 상태 반환 -->
+        <td>
+            <img th:src="${user.profileUrl}" alt="picture" height="40" style="border-radius: 50%"/>
+        </td>
         <td th:text="${user.uid}">james</td>
         <td th:text="${user.uname}">제임스</td>
         <td th:text="${user.email}">james@gmail.com</td>
         <td th:text="${user.regDate}">2024-09-26</td>
         <td th:text="${user.role}">ROLE_USER</td>
+        <td th:text="${user.provider}">GOOGLE</td>
         <td>
             <a th:href="@{/user/update/{x}(x=${user.uid})}">수정</a>
             <a th:href="@{/user/delete/{x}(x=${user.uid})}">삭제</a>
