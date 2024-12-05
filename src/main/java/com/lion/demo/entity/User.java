@@ -24,5 +24,7 @@ public class User {
     private String uname;
     private String email;
     private LocalDate regDate;
-    private String role;
+    private String role;    // 권한 (admin , user)
+    private String provider; // 로그인 provider (소셜로그인)
+    private String profileUrl;  // 프로필 이미지 url
 }
