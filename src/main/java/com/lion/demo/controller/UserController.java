@@ -59,9 +59,12 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public String list(Model model){
+    public String list(HttpSession session, Model model){
         List<User> userList = userService.getUsers();
+
+        session.setAttribute("menu", "user");
         model.addAttribute("userList", userList);
+
         return "user/list";
     }
 

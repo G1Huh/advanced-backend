@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-
+  <h1><strong>에러 페이지</strong></h1>
+  <hr>
+  <p th:text="${status}"></p>
+  <p th:text="${error}"></p>
+  <p th:text="${message}"></p>
+  <button onclick="location.href='/mall/list'">홈으로 가기</button>
+  <img src="/img/not-found.svg" width="70%">
 </body>
 </html>

@@ -24,15 +24,15 @@ public class SecurityConfig {
         http.csrf(auth -> auth.disable())   // CSRF 방어 기능 비활성화
                 .headers(x -> x.frameOptions(y -> y.disable()))  // H2-console 사용 위해
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/book/list", "/book/detail",
-                                "/mall/list", "/mall/detail",
+                        .requestMatchers("/book/list", "/book/detail/**",
+                                "/mall/list", "/mall/detail/**",
                                 "/user/register", "/h2-console", "/demo/**",
                                 "/img/**", "/js/**", "/css/**", "error/**")
-                        .permitAll()  // 보안 체크 없이 통과
+                        .permitAll()  // 보안 체크 없이 통과 (누구나 접근 가능)
                         .requestMatchers( "/book/insert", "/book/yes24",
                                 "order/listAll",
                                 "/order/bookStat", "/user/delete", "/user/list").hasAuthority("ROLE_ADMIN")
-                        .anyRequest().authenticated()  // auth 체크
+                        .anyRequest().authenticated()  // auth 체크 (특정 사용자 - ROLE_ADMIN 만 접근 가능)
                 )
                 .formLogin(auth -> auth
                         .loginPage("/user/login")   // login Form

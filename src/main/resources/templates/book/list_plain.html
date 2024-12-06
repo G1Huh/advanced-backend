@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    th, td, select, input, button { padding: 3px; }
+  </style>
+  <script>
+    function handleEnter(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();     // 줄바꿈 방지
+        search();
+      }
+    }
+    function search() {
+      const field = document.getElementById('field').value;
+      const query = document.getElementById('query').value;
+      const uri = '/book/list?p=1' + '&f=' + field + '&q=' + query;
+      location.href = encodeURI(uri);   // 한글 입력시 인코딩해서 전달
+    }
+    function gotoPage() {
+      const page = document.getElementById('page').value;
+      location.href = '/book/list?p=' + page;
+    }
+  </script>
+</head>
+<body style="margin: 50px;">
+  <h1>도서 목록
+    <span style="font-size: 16px; margin-left: 100px;">
+      <a th:href="@{/book/insert}">도서 등록</a>
+      <select id="field" style="margin-left: 40px">
+        <option value="title" selected>제목</option>
+        <option value="author">저자</option>
+        <option value="company">출판사</option>
+        <option value="summary">요약</option>
+      </select>
+      <input type="text" id="query" placeholder="검색" onkeydown="handleEnter(event)">
+      <span style="margin-left: 40px">페이지</span>
+      <input type="text" id="page" value="1">
+      <button onclick="gotoPage()">페이지 이동</button>
+    </span>
+  </h1>
+  <hr>
+  <table border="1">
+    <tr>
+      <th>Id</th>
+      <th>이미지</th>
+      <th>제목</th>
+      <th>저자</th>
+      <th>출판사</th>
+      <th>가격</th>
+      <th>액션</th>
+    </tr>
+    <tr th:each="book: ${bookList}">
+      <td th:text="${book.bid}">1</td>
+      <td style="text-align: center;">
+        <img th:src="${book.imageUrl}" height="60">
+      </td>
+      <td>
+        <a th:href="@{/book/detail/{x}(x=${book.bid}, q=${query})}">[[${book.title}]]</a>
+      </td>
+      <td th:text="${book.author}">김난도 외 9명</td>
+      <td th:text="${book.company}">미래의 창</td>
+      <td th:text="${book.price}">20000</td>
+      <td>
+        <a th:href="@{/book/update/{x}(x=${book.bid})}">수정</a>
+        <a th:href="@{/book/delete/{x}(x=${book.bid})}">삭제</a>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

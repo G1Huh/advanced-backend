@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        input { padding: 3px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    input { padding: 3px; }
+  </style>
 </head>
 <body style="margin: 50px;">
-<h1>사용자 등록</h1>
-<hr>
-<form action="/user/register" method="post">
+  <h1>사용자 등록</h1>
+  <hr>
+  <form action="/user/register" method="post">
     <input type="text" name="uid" placeholder="uid"><br><br>
     <input type="password" name="pwd" placeholder="패스워드"><br><br>
     <input type="password" name="pwd2" placeholder="패스워드 확인"><br><br>
     <input type="text" name="uname" placeholder="사용자 이름"><br><br>
     <input type="text" name="email" placeholder="이메일"><br><br>
     <input type="submit" value="가입">
-</form>
+  </form>
 </body>
 </html>
