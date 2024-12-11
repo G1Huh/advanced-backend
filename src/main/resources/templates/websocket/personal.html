@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Personal Messaging</title>
+    <script>
+        let socket;
+        let userId, recipientId;
+
+        function connect() {
+            userId = document.getElementById('userId').value;
+            socket = new WebSocket('ws://localhost:8090/personal?userId=' + userId);
+            socket.onopen = () => {
+                console.log('Connected.');
+                document.getElementById('status').innerText = 'Connected';
+            }
+            socket.onmessage = (event) => {
+                // socket.onmessage = function(event){} 와 같음
+                console.log('Message from server: ' + event.data);
+                const message = document.getElementById('message');
+                message.value += 'from ' + recipientId + ' : ' + event.data + '\n';
+            }
+            socket.onclose = () => {
+                console.log("Disconnected from the server.");
+                document.getElementById('status').innerText = "Disconencted";
+            }
+        }
+
+        function sendMessage() {
+            recipientId = document.getElementById('recipientId').value.trim();
+            const messageInput = document.getElementById('messageInput').value;
+            if (socket && socket.readyState == socket.OPEN) {
+                socket.send(recipientId + ' : ' + messageInput);
+                document.getElementById('messageInput').value = '';
+                const message = document.getElementById('message');
+                message.value += userId + ' wrote : ' + messageInput + '\n';
+            } else {
+                alert('Websocket is not Connected!');
+            }
+        }
+
+        function disconnect() {
+            if (socket && socket.readyState == socket.OPEN) {
+                socket.close();
+                console.log('Disconnected by Client');
+            } else {
+                alert('Websocket is not Connected!');
+            }
+        }
+
+        function handleEnterKey(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // 기본 이벤트 방지 (enter -> 줄바꿈)
+                sendMessage();
+            }
+        }
+
+
+    </script>
+</head>
+<body style="margin :40px;">
+<h1>WebSocket = Echo</h1>
+<input type="hidden" id="userId" th:value="${session.sessUid}">
+<p>Status :
+    <span id="status">Connecting..</span>
+    <button onclick="connect()">연결</button>
+</p>
+<input type="text" id="recipientId" placeholder="상대방의 ID를 입력하세요."><br>
+<textarea id="message" rows="10" cols="60" readonly></textarea><br><br>
+<input type="text" id="messageInput" placeholder="Enter your Message" onkeydown="handleEnterKey(event)"><br><br>
+<button onclick="sendMessage()">전송</button>
+<button onclick="disconnect()">연결 해제</button>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Echo</title>
+    <script>
+        function echo(){
+            const socket = new WebSocket('ws://localhost:8090/echo');
+            socket.onopen = () => {
+                console.log('Connected.');
+                document.getElementById('status').innerText = 'Connected';
+            }
+            socket.onmessage = (event) => {
+                console.log('Message from Server : ' + event.data);
+                const messages = document.getElementById('message');
+                messages.value += event.data + '\n';
+            }
+            socket.onclose = () => {
+                console.log("Disconnected.");
+                document.getElementById('status').innerText = 'Disconnected';
+            }
+s
+
+        }
+    </script>
+</head>
+<body style="margin :40px;">
+    <h1>WebSocket = Echo</h1>
+    <button onclick="echo()">전송</button>
+
+</body>
+</html>

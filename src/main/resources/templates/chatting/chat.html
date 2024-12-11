@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <header th:replace="~{fragments/base :: head}"></header>
+  <link href="/css/chatEach.css" rel="stylesheet">
+  <style>
+    th { text-align: center; }
+    td { vertical-align: middle; }
+  </style>
+  <script src="/js/chatEach.js"></script>
+  <script>
+    // Scroll to the bottom of chat container on page load
+    window.onload = () => {
+      // connect();
+      fetchChatItems();
+    }
+  </script>
+</head>
+
+<body>
+<div th:replace="~{fragments/base :: top}"></div>
+
+<div class="container" style="margin-top: 80px">
+  <div class="row">
+    <div class="col-3">
+      <aside th:replace="~{fragments/base :: aside('/img/websocket-logo.jpg')}"></aside>
+    </div>
+
+    <div class="col-9">
+      <main id="main">
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <div class="chat-window">
+              <!-- Header -->
+              <div class="header d-flex justify-content-between py-3">
+                <div>
+                  <a href="/chatting/home"><i class="fa-solid fa-arrow-left mx-2" style="color: white;"></i></a>
+                  <span style="font-weight: bold;" th:text="${friend.uname}">마리아</span>
+                  <input type="hidden" id="recipientId" th:value="${friend.uid}">
+                  <input type="hidden" id="userId" th:value="${user.uid}">
+                </div>
+                <div>
+                  <i class="fa-solid fa-magnifying-glass me-2"></i>
+                  <i class="fa-solid fa-gear me-2"></i>
+                  <i id="statusIcon" class="fa-solid fa-link"></i>
+                </div>
+              </div>
+
+              <!-- Chat Container가 동적으로 바뀜 -->
+              <div class="chat-container" id="chatContainer"></div>
+
+            </div>
+          </div>
+          <div class="col-3"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+</body>
+</html>

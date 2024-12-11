@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -25,6 +24,7 @@ public class SecurityConfig {
                 .headers(x -> x.frameOptions(y -> y.disable()))  // H2-console 사용 위해
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/book/list", "/book/detail/**", "/misc/**",
+                                "/echo", "/personal", "/websocket/**","/actuator/**",
                                 "/mall/list", "/mall/detail/**",
                                 "/user/register", "/h2-console", "/demo/**",
                                 "/img/**", "/js/**", "/css/**", "error/**")
