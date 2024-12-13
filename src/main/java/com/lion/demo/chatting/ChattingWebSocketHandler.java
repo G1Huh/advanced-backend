@@ -1,5 +1,6 @@
 package com.lion.demo.chatting;
 
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -47,13 +48,11 @@ public class ChattingWebSocketHandler extends TextWebSocketHandler {
             WebSocketSession targetSession = userSessions.get(recipientId); // session : "home", "chat:jiwon"
             String targetStatus = userStatus.get(recipientId);
 
-            if(targetStatus.substring(0, 4).equals("chat"))
-                targetStatus = targetStatus.substring(5);
+
 
             if (targetSession != null && targetSession.isOpen()) {
-                System.out.println("from " + userId + ": " + msg);
-                targetSession.sendMessage(new TextMessage(msg));
-
+                if (targetStatus.equals("home") || targetStatus.equals("chat:" + userId))
+                    targetSession.sendMessage(new TextMessage("from " + userId + ": " + msg));
             } else {
                 System.out.println("targetsession 불가");
             }
@@ -69,6 +68,17 @@ public class ChattingWebSocketHandler extends TextWebSocketHandler {
             System.out.println("User disconected : " + userId);
         }
 
+    }
+
+    public int isReadable(String senderUid, String recipientUid){
+        WebSocketSession targetSession = userSessions.get(recipientUid);
+
+        if(targetSession != null && targetSession.isOpen()){
+            String targetStatus = userStatus.get(recipientUid);
+            if(targetStatus.equals("chat:"+senderUid))
+                return 1;
+        }
+        return 0;
     }
 
     private String getUserId(WebSocketSession session) {

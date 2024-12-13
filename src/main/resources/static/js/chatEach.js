@@ -5,7 +5,9 @@ function connect() {
     userId = document.getElementById('userId').value;
     const chattingStatus = document.getElementById('chattingStatus').value;
     const serverPort = $('#serverPort').val();
-    socket = new WebSocket('ws://localhost:' + serverPort + '/chat?userId=' + userId + '&status=' + chattingStatus);
+    const serverIp = $('#serverIp').val();
+    //	socket = new WebSocket('ws://localhost:' + serverPort + '/chat?userId=' + userId + '&status=' + chattingStatus);
+    socket = new WebSocket(`ws://${serverIp}:${serverPort}/chat?userId=${userId}&status=${chattingStatus}`);
 
     socket.onopen = () => {
         console.log('Connected as ' + userId);
@@ -14,8 +16,8 @@ function connect() {
     socket.onmessage = async(event) => {
         console.log('Message from server: ' + event.data);
         setTimeout(async () => {
-            await fetchChatterList();
-        }, 200);
+            await fetchChatItems();
+        }, 100);
     }
     socket.onclose = () => {
         console.log('Disconnected from the server');
@@ -106,7 +108,8 @@ function sendMessage() {
     const userId = document.getElementById('userId').value;
     const message = document.getElementById('messageInput').value;
 
-    // socket 통신
+    // socket 통신 (상대방이 채팅방이나 채팅방목록에 있을 때), 상대방의 상태가 접속이 아니면 DB에만 저장
+    socket.send(recipientId + ':' + message);
 
     // data DB에 저장 (Controller에게 보내기)
     const formData = new FormData();
@@ -124,6 +127,12 @@ function sendMessage() {
             $('#messageInput').val('');
             fetchChatItems();
         }
-    })
+    });
 
+}
+
+function sendSignal(){
+    const recipientId = document.getElementById('recipientId').value;
+    // socket 송신 - 상대방에게 내가 접속했음을 알림
+    socket.send(recipientId + ':Alive');
 }

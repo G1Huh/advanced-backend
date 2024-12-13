@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -25,9 +27,13 @@ public class ChattingController {
     @Autowired
     private UserService userService;
     @Autowired
+    private ChattingWebSocketHandler webSocketHandler;
+    @Autowired
     private TimeUtil timeUtil;
     @Value("${server.port}")
     private String serverPort;
+    @Value("${server.ip}")
+    private String serverIp;
 
     @GetMapping("/home")    // home -> 채팅방 리스트 페이지
     public String home(HttpSession session, Model model) {
@@ -37,6 +43,7 @@ public class ChattingController {
         model.addAttribute("user", user);
         session.setAttribute("menu", "chatting");   // 메뉴 -> 채팅
         session.setAttribute("serverPort", serverPort);
+        session.setAttribute("serverIp", serverIp);
 
         return "chatting/home";
     }
@@ -97,16 +104,17 @@ public class ChattingController {
     @GetMapping("/getChatItems")
     @ResponseBody
     public ResponseEntity<Map<String, List<ChatItem>>> getChatItems(
-            @RequestParam("userId") String userId, @RequestParam("recipientId") String recipientId) {
+            @RequestParam("userId") String userId, @RequestParam("recipientId") String recipientId
+    ) {
         User user = userService.findByUid(userId);
         User friend = userService.findByUid(recipientId);
-
         Map<String, List<ChatMessage>> map = chatMessageService.getChatMessagesByDate(userId, recipientId);
+
         Map<String, List<ChatItem>> chatItemsByDate = new LinkedHashMap<>();
-        for (Map.Entry<String, List<ChatMessage>> entry : map.entrySet()) {
+        for (Map.Entry<String, List<ChatMessage>> entry: map.entrySet()) {
             String key = entry.getKey();
             List<ChatItem> list = new ArrayList<>();
-            for (ChatMessage cm : map.get(key)) {
+            for (ChatMessage cm: map.get(key)) {
                 ChatItem chatItem = ChatItem.builder()
                         .isMine(cm.getSender().getUid().equals(userId) ? 1 : 0)
                         .message(cm.getMessage())
@@ -117,7 +125,9 @@ public class ChattingController {
                         .build();
                 list.add(chatItem);
             }
-            chatItemsByDate.put(key, list);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd (E)", Locale.KOREAN);
+            String date = LocalDate.parse(key).format(formatter);
+            chatItemsByDate.put(date, list);
         }
         return ResponseEntity.ok(chatItemsByDate);
     }
@@ -132,7 +142,7 @@ public class ChattingController {
                 .recipient(recipient)
                 .message(message)
                 .timestamp(LocalDateTime.now())
-                .hasRead(0)
+                .hasRead(webSocketHandler.isReadable(senderUid, recipientUid))
                 .build();
 
         chatMessageService.insertChatMessage(chatMessage);
