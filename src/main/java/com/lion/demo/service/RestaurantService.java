@@ -74,31 +74,48 @@ public class RestaurantService {
             return new StringQuery("{\"match_all\": {}}");
         }
         String queryString = null;
-        if (field.equals(("info"))) {
+        if (field.equals("info")) {
             queryString = String.format("""
-                            {
-                                "multi_match": {
-                                    "query": "%s",
-                                    "fields" : [
-                                        "info.*"
-                                    ],
-                                    "fuzziness" : "AUTO"
+                    {
+                        "multi_match":{
+                        "query":"%s",
+                                "fields": [
+                        "info.*"
+                                        ],
+                        "fuzziness":"AUTO"
+                        }   
+                    }
+                    """, keyword
+            );
+        } else if (field.equals("reviews")) {
+            queryString = String.format("""
+                    {
+                        "nested":{
+                        "path":"reviews",
+                                "query":{
+                            "match":{
+                                "reviews.review":{
+                                    "query":"%s",
+                                            "fuzziness":"AUTO"
+                                    }   
+                                }
                             }
-                            """,
-                    field, keyword);
+                        }
+                    }
+                    """, keyword
+            );
         } else {
             queryString = String.format("""
-                            {
-                                "match": {
-                                    "query": "%s",
-                                    "fields" : [
-                                        "info.*"
-                                    ],
-                                    "fuzziness" : "AUTO"
-                            }
-                            """,
-                    field, keyword);
-
+                    {
+                        "match":{
+                        "%s":{
+                            "query":"%s",
+                                    "fuzziness":"AUTO"
+                        }
+                    }
+                    }
+                    """, field, keyword
+            );
         }
 
 
