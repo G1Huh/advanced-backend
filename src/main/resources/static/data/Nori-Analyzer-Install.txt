@@ -9,8 +9,11 @@ C:\Tools\Elasticsearch\bin\elasticsearch-plugin install analysis-nori
 - 설치 확인
 elasticsearch-plugin list
 
-[Nori Analyzer가 적용된 인덱스 생성]
-curl -X PUT "http://localhost:9200/restaurants_v2" \
+[기존 restaurant 삭제]
+curl -X DELETE localhost:9200/restaurants -u elastic:P6VQ+CTgs0UoC-bzwZwr
+
+[Nori Analyzer가 적용된 인덱스 생성 - Restaurants]
+curl -X PUT "http://localhost:9200/restaurants" \
   -H "Content-Type: application/json" \
   -d '{
   "settings": {
@@ -30,6 +33,10 @@ curl -X PUT "http://localhost:9200/restaurants_v2" \
         "type": "text",
         "analyzer": "korean_analyzer"
       },
+      "info": {
+        "type" : "object",
+        "dynamic": true
+      },
       "intro": {
         "type": "text",
         "analyzer": "korean_analyzer"
@@ -37,7 +44,7 @@ curl -X PUT "http://localhost:9200/restaurants_v2" \
       "reviews": {
         "type": "nested",
         "properties": {
-          "text": {
+          "review": {
             "type": "text",
             "analyzer": "korean_analyzer"
           },
@@ -46,5 +53,45 @@ curl -X PUT "http://localhost:9200/restaurants_v2" \
           }
         }
       }
+     }
+  }
+}'
+
+
+
+[Nori Analyzer가 적용된 인덱스 생성 - Books]
+curl -X PUT "http://localhost:9200/books" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "korean_analyzer": {
+          "type": "custom",
+          "tokenizer": "nori_tokenizer",
+          "filter": ["lowercase", "nori_part_of_speech"]
+        }
+      }
     }
-  }'
+  },
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "analyzer": "korean_analyzer"
+      },
+      "author": {
+        "type" : "text",
+        "analyzer": "korean_analyzer"
+      },
+      "company": {
+        "type": "text",
+        "analyzer": "korean_analyzer"
+      },
+      "summary": {
+          "type": "text",
+          "analyzer": "korean_analyzer"
+      }
+    }
+  }
+}'

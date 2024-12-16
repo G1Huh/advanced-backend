@@ -48,7 +48,7 @@ public class BookEsController {
 
     @GetMapping("/detail/{bookId}")
     public String detail(@PathVariable String bookId,
-                         @RequestParam(name="q", defaultValue = "**") String query,
+                         @RequestParam(name="q", defaultValue = "") String query,
                          Model model) {
         BookEs bookEs = bookEsService.findById(bookId);
         if (!query.equals("")) {

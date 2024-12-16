@@ -24,13 +24,14 @@ public class SecurityConfig {
                 .headers(x -> x.frameOptions(y -> y.disable()))  // H2-console 사용 위해
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/book/list", "/book/detail/**", "/misc/**",
+                                "/restaurant/list", "restaurant/detail/**",
                                 "/echo", "/personal", "/websocket/**","/actuator/**",
                                 "/mall/list", "/mall/detail/**",
                                 "/user/register", "/h2-console", "/demo/**",
-                                "/img/**", "/js/**", "/css/**", "error/**")
+                                "/img/**", "/js/**", "/css/**", "/error/**")
                         .permitAll()  // 보안 체크 없이 통과 (누구나 접근 가능)
                         .requestMatchers( "/book/insert", "/book/yes24",
-                                "order/listAll",
+                                "order/listAll", "/restaurant/init",
                                 "/order/bookStat", "/user/delete", "/user/list").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()  // auth 체크 (특정 사용자 - ROLE_ADMIN 만 접근 가능)
                 )
