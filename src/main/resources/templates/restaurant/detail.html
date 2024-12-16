@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <header th:replace="~{fragments/base :: head}"></header>
+</head>
+<body>
+  <div th:insert="~{fragments/base :: top}"></div>
+
+  <div class="container" style="margin-top:80px">
+		<div class="row">
+			<div class="col-3">
+        <aside th:replace="~{fragments/base :: aside('/img/female.jpg')}"></aside>
+			</div>
+
+      <div class="col-9">
+        <main>
+          <h3><strong>서울맛집 - [[${restaurant.name}]]</strong></h3>
+          <hr>
+          <table class="table">
+            <tr>
+              <td th:attr="rowspan=${infoCount}" style="text-align: center; width: 40%;">
+                <img th:src="${restaurant.imgSrc}" alt="${restaurant.name}" height="200">
+              </td>
+              <td style="width: 15%;">전화번호</td>
+              <td style="width: 45%;" th:text="${restaurant.info.get('전화번호')}">02-722-0911</td>
+            </tr>
+            <tr th:each="entry: ${infoMap}">
+              <td th:text="${entry.key}"></td>
+              <td th:text="${entry.value}"></td>
+            </tr>
+            
+            <tr><td colspan="3">
+              <span th:utext="${restaurant.intro}">업소 소개</span>
+            </td></tr>
+            <tr><td colspan="3" style="text-align: center;">
+              <button class="btn btn-primary" onclick="location.href='/restaurant/list'">
+                목록으로
+              </button>
+            </td></tr>
+          </table>
+
+          <table class="table">
+            <tr th:each="review: ${restaurant.reviews}">
+              <td style="width: 90%;" th:utext="${review.get('review')}">리뷰</td>
+              <td style="width: 10%; text-align: center;" th:text="${review.get('score')}">평점</td>
+            </tr>
+          </table>
+        </main>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

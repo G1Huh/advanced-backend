@@ -1,0 +1,50 @@
+[AWS에서 설치할 경우]
+sudo /usr/share/elasticsearch/bin/elasticsearch-plugin install analysis-nori
+
+[윈도우에 설치할 경우]
+관리자 모드로 CMD 실행 후
+C:\Tools\Elasticsearch\bin\elasticsearch-plugin install analysis-nori
+
+[Elasticsearch 재시작]
+- 설치 확인
+elasticsearch-plugin list
+
+[Nori Analyzer가 적용된 인덱스 생성]
+curl -X PUT "http://localhost:9200/restaurants_v2" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "korean_analyzer": {
+          "type": "custom",
+          "tokenizer": "nori_tokenizer",
+          "filter": ["lowercase", "nori_part_of_speech"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "text",
+        "analyzer": "korean_analyzer"
+      },
+      "intro": {
+        "type": "text",
+        "analyzer": "korean_analyzer"
+      },
+      "reviews": {
+        "type": "nested",
+        "properties": {
+          "text": {
+            "type": "text",
+            "analyzer": "korean_analyzer"
+          },
+          "score": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }'
