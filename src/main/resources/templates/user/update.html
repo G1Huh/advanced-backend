@@ -9,23 +9,23 @@
   </style>
 </head>
 <body style="margin: 50px;">
-  <h1>사용자 수정</h1>
-  <hr>
-  <form action="/user/update" method="post">
-    <input type="hidden" name="uid" th:value="${user.uid}"><br><br>
-    <input type="text" th:value="${user.uid}" disabled><br><br>
-    <input type="password" name="pwd" placeholder="패스워드"><br><br>
-    <input type="password" name="pwd2" placeholder="패스워드 확인"><br><br>
-    <input type="text" name="uname" th:value="${user.uname}"><br><br>
-    <input type="text" name="email" th:value="${user.email}"><br><br>
-    <input type="text" name="profileUrl" th:value="${user.profileUrl}"><br><br>
-    <select name="role">
-      <option value="ROLE_USER">사용자 권한</option>
-      <option value="ROLE_ADMIN">관리자 권한</option>
-    </select><br><br>
-    <input type="text" name="provider" th:value="${user.provider}"><br><br>
-    <input type="text" th:value="${user.regDate}" disabled><br><br>
-    <input type="submit" value="수정">
-  </form>
+<h1>사용자 수정</h1>
+<hr>
+<form action="/user/update" method="post">
+  <input type="hidden" name="uid" th:value="${user.uid}"><br><br>
+  <input type="text" th:value="${user.uid}" disabled><br><br>
+  <input type="password" name="pwd" placeholder="패스워드"><br><br>
+  <input type="password" name="pwd2" placeholder="패스워드 확인"><br><br>
+  <input type="text" name="uname" th:value="${user.uname}"><br><br>
+  <input type="text" name="email" th:value="${user.email}"><br><br>
+  <input type="text" name="profileUrl" th:value="${user.profileUrl}"><br><br>
+  <select name="role">
+    <option value="ROLE_USER">사용자 권한</option>
+    <option value="ROLE_ADMIN">관리자 권한</option>
+  </select><br><br>
+  <input type="text" name="provider" th:value="${user.provider}"><br><br>
+  <input type="text" th:value="${user.regDate}" disabled><br><br>
+  <input type="submit" value="수정">
+</form>
 </body>
 </html>
