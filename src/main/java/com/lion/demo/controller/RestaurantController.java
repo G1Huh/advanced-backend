@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class RestaurantController {
     @Autowired
     private CsvFileReaderService csvFileReaderService;
+    @GetMapping("/list")
+    public String list(){
+        return "";
+
+    }
 
 
 
