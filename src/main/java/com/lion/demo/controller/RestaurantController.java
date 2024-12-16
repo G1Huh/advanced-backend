@@ -73,7 +73,7 @@ public class RestaurantController {
     @GetMapping("/init")
     @ResponseBody
     public String init(){
-        csvFileReaderService.csvFileToElasticSearch();
+        csvFileReaderService.RestaurantSeoulToElasticSearch();
         return "<h1>Done</h1>";
     }
 }
